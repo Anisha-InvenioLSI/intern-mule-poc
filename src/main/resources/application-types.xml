@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="xmldatatype" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="json" format="json">
+      <types:shape format="weave" example="examples/poc22-3.json"><![CDATA[%dw 2.0
+
+type json = Array<{|  "order-id": String,   "user-name": String,   "phone-number": String,   mail: String|}> {"example": "[{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"XYZ\\\",\\\"phone-number\\\":\\\"+91 9876543210\\\",\\\"mail\\\":\\\"test@inveniolsi.com\\\"},{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"ABC\\\",\\\"phone-number\\\":\\\"+91 9876543211\\\",\\\"mail\\\":\\\"test123@inveniolsi.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="XML" format="xml">
+      <types:example format="xml" element="orders" location="examples/pocfile.xml"/>
+    </types:type>
+    <types:type name="json1" format="json">
+      <types:shape format="weave" example="examples/poc22.json"><![CDATA[%dw 2.0
+
+type json1 = Array<{|  "order-id": String,   "user-name": String,   "phone-number": String,   mail: String|}> {"example": "[{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"XYZ\\\",\\\"phone-number\\\":\\\"+91 9876543210\\\",\\\"mail\\\":\\\"test@inveniolsi.com\\\"},{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"ABC\\\",\\\"phone-number\\\":\\\"+91 9876543211\\\",\\\"mail\\\":\\\"test123@inveniolsi.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="xml" format="xml">
+      <types:example format="xml" element="orders" location="examples/pocfile-1.xml"/>
+    </types:type>
+    <types:type name="gfg" format="xml">
+      <types:example format="xml" element="orders" location="examples/pocfile-2.xml"/>
+    </types:type>
+    <types:type name="anisha" format="xml">
+      <types:example format="xml" element="orders" location="examples/pocfile-3.xml"/>
+    </types:type>
+    <types:type name="fdd" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="anishaa" format="xml">
+      <types:example format="xml" element="orders" location="examples/pocfile-4.xml"/>
+    </types:type>
+    <types:type name="annie" format="json">
+      <types:shape format="weave" example="examples/poc22-1.json"><![CDATA[%dw 2.0
+
+type annie = Array<{|  "order-id": String,   "user-name": String,   "phone-number": String,   mail: String|}> {"example": "[{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"XYZ\\\",\\\"phone-number\\\":\\\"+91 9876543210\\\",\\\"mail\\\":\\\"test@inveniolsi.com\\\"},{\\\"order-id\\\":\\\"AB123\\\",\\\"user-name\\\":\\\"ABC\\\",\\\"phone-number\\\":\\\"+91 9876543211\\\",\\\"mail\\\":\\\"test123@inveniolsi.com\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#a424adaa-5db7-4e2c-9275-02fd86c5d581">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="xml"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="json1"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d34ed4f6-73e7-478e-8a5f-5cd371d91190">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="XML"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b0e28c2e-2d77-4aa5-ad16-3bc478ad7dec">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="gfg"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="json1"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

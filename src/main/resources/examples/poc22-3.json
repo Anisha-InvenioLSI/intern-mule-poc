@@ -1,0 +1,14 @@
+[
+  {
+    "order-id": "AB123",
+    "user-name": "XYZ",
+    "phone-number": "+91 9876543210",
+    "mail": test@inveniolsi.com
+  },
+  {
+    "order-id": "AB123",
+    "user-name": "ABC",
+    "phone-number": "+91 9876543211",
+    "mail": test123@inveniolsi.com
+  }
+]

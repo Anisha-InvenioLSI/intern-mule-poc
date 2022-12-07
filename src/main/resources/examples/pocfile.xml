@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<orders>
+  <orderId>AB123</orderId>
+  <processingDate>061222</processingDate>
+  <processingTime>1237</processingTime>
+  <noOfRecords>2</noOfRecords>
+  <records>
+    <name>xyz</name>
+    <contactNo>9876543210</contactNo>
+    <emailId>test@inveniolsi.com</emailId>
+  </records>
+  <records>
+    <name>abc</name>
+    <contactNo>9876543211</contactNo>
+    <emailId>test123@inveniolsi.com</emailId>
+  </records>
+</orders>
