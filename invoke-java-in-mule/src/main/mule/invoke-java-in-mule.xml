@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd">
+	<sftp:config name="SFTP_Config" doc:name="SFTP Config" doc:id="61d52a08-2c85-4484-8aa3-8215797b4a81" >
+		<sftp:connection host="192.168.4.138" username="invenio" password="Invenio" workingDir=" \orders"/>
+	</sftp:config>
+	<flow name="invoke-java-in-muleFlow" doc:id="e014b534-d16a-4215-909c-6cab882b2637" >
+		<scheduler doc:name="Scheduler" doc:id="5214238e-a39f-4314-8f2c-e74dcd6645ea" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="2" timeUnit="MINUTES"/>
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Logger" doc:id="eabc3da3-b08f-4203-8ebe-fdbe2772befd" message="started"/>
+		<java:invoke-static doc:name="Invoke static" doc:id="c603a704-4ffe-43e1-8314-fc5add183d1b" class="ReadDetails" method="readCSV(java.lang.String)">
+<java:args ><![CDATA[#[{
+    "CSVfile": "D:\\files\javapoc.csv"
+}]]]></java:args>
+</java:invoke-static>	
+		<logger level="INFO" doc:name="Logger1" doc:id="d428f6a6-1da1-4823-bcb5-dabe635d4893" message="#[payload]" />
+		<ee:transform doc:name="Transform Message" doc:id="2192e4b5-1c3b-45cf-a2b5-319b7cb13208">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="09d59b6d-a285-45b9-9825-2af10c932cc6" message="#[payload]"/>
+		<sftp:write doc:name="Write" doc:id="b56679dd-dcbc-449d-b376-bd7b6e7fb184" config-ref="SFTP_Config" path="#[&quot;POC8&quot; ++ &quot;_&quot; ++ now() as Date {format: &quot;yyyy-MM-ddTHH:mm:ss. SSSZ&quot;}++ '.json']"/>
+		<logger level="INFO" doc:name="Logger" doc:id="97c3f5d1-46a4-4596-9a38-a8d6705285b5" message='"File has been saved"'/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1830d7cc-0484-44a1-ad92-01ed62a7b4e5" type="SFTP:ACCESS_DENIED, SFTP:CONNECTIVITY, SFTP:FILE_ALREADY_EXISTS, SFTP:FILE_LOCK, SFTP:ILLEGAL_CONTENT, SFTP:ILLEGAL_PATH, SFTP:RETRY_EXHAUSTED">
+				<logger level="INFO" doc:name="Logger" doc:id="1c7f2614-92ef-49a8-b57e-e4f17589c690" message='"the connection failed"'/>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f74cd628-df7a-46a4-9e22-97621e1903ee" type="ANY">
+				<logger level="INFO" doc:name="Logger" doc:id="169e89fa-97ef-4f11-ab72-c070058e23b5" message='"could not process"'/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
